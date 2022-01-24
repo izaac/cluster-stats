@@ -124,7 +124,7 @@ func GetConfigMapStats(client *kubernetes.Clientset, ctx *context.Context, opts 
 	largestCMSize := 0
 	largestCMName := ""
 	largestCMNamespace := ""
-	largeSizeOfCM := c.getConf().Configmaplargesize
+	largeSizeOfCM := c.GetConf().Configmaplargesize
 	mapOfLargestCMs := map[string]int{}
 
 	err := error(nil)
