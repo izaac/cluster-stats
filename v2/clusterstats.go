@@ -13,12 +13,12 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
-type conf struct {
+type Conf struct {
 	Kubeconfigpath     string `yaml:"kubeconfigpath"`
 	Configmaplargesize int    `yaml:"configmaplargesize"`
 }
 
-func (c *conf) getConf() *conf {
+func (c *Conf) getConf() *Conf {
 
 	yamlFile, err := ioutil.ReadFile("conf.yaml")
 	if err != nil {
@@ -31,7 +31,7 @@ func (c *conf) getConf() *conf {
 	return c
 }
 
-func printMap(m map[string]int) {
+func PrintMap(m map[string]int) {
 	var maxLenKey int
 	for k := range m {
 		if len(k) > maxLenKey {
@@ -57,7 +57,7 @@ func printMap(m map[string]int) {
 	}
 }
 
-func getKubeConfigsList(path string) ([]string, error) {
+func GetKubeConfigsList(path string) ([]string, error) {
 	items, err := ioutil.ReadDir(path)
 	var configs []string
 	if err != nil {
@@ -78,7 +78,7 @@ func getKubeConfigsList(path string) ([]string, error) {
 	return configs, err
 }
 
-func getTotalCRBs(client *kubernetes.Clientset, ctx *context.Context, opts *v1.ListOptions) (int, error) {
+func GetTotalCRBs(client *kubernetes.Clientset, ctx *context.Context, opts *v1.ListOptions) (int, error) {
 	crblist, err := client.RbacV1().ClusterRoleBindings().List(*ctx, *opts)
 	total := 0
 
@@ -89,7 +89,7 @@ func getTotalCRBs(client *kubernetes.Clientset, ctx *context.Context, opts *v1.L
 	return total, err
 }
 
-func getTotalRBs(client *kubernetes.Clientset, ctx *context.Context, opts *v1.ListOptions, nsList *apiv1.NamespaceList) (int, error) {
+func GetTotalRBs(client *kubernetes.Clientset, ctx *context.Context, opts *v1.ListOptions, nsList *apiv1.NamespaceList) (int, error) {
 	roleBindingsTotal := 0
 	err := error(nil)
 	for _, ns := range nsList.Items {
@@ -104,7 +104,7 @@ func getTotalRBs(client *kubernetes.Clientset, ctx *context.Context, opts *v1.Li
 	return roleBindingsTotal, err
 }
 
-func getSecretsStats(client *kubernetes.Clientset, ctx *context.Context, opts *v1.ListOptions, nsList *apiv1.NamespaceList) (int, error) {
+func GetSecretsStats(client *kubernetes.Clientset, ctx *context.Context, opts *v1.ListOptions, nsList *apiv1.NamespaceList) (int, error) {
 	secretsTotal := 0
 	err := error(nil)
 	for _, ns := range nsList.Items {
@@ -119,8 +119,8 @@ func getSecretsStats(client *kubernetes.Clientset, ctx *context.Context, opts *v
 	return secretsTotal, err
 }
 
-func getConfigMapStats(client *kubernetes.Clientset, ctx *context.Context, opts *v1.ListOptions, nsList *apiv1.NamespaceList) (int, string, string, map[string]int, error) {
-	var c conf
+func GetConfigMapStats(client *kubernetes.Clientset, ctx *context.Context, opts *v1.ListOptions, nsList *apiv1.NamespaceList) (int, string, string, map[string]int, error) {
+	var c Conf
 	largestCMSize := 0
 	largestCMName := ""
 	largestCMNamespace := ""
