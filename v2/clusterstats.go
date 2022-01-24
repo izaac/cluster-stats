@@ -18,7 +18,7 @@ type Conf struct {
 	Configmaplargesize int    `yaml:"configmaplargesize"`
 }
 
-func (c *Conf) getConf() *Conf {
+func (c *Conf) GetConf() *Conf {
 
 	yamlFile, err := ioutil.ReadFile("conf.yaml")
 	if err != nil {
